@@ -16,12 +16,12 @@ class JobsTableViewCell: NSObject {
         configureContent(cell: cell)
         
         //Text Configuration
-        Utils.setTableCellLabelText(cell: cell, labelTag: TABLE_CELL_TAGS.title, text: data?.getTitle() ?? "default")
-        Utils.setTableCellLabelText(cell: cell, labelTag: TABLE_CELL_TAGS.distance, text: data?.category_distance() ?? "default")
-        Utils.setTableCellLabelText(cell: cell, labelTag: TABLE_CELL_TAGS.rate, text: data?.getHourlyRate() ?? "default")
-        Utils.setTableCellLabelText(cell: cell, labelTag: TABLE_CELL_TAGS.working_hours, text: data?.start_end_time() ?? "default")
+        Utils.setTableCellLabelText(cell: cell, labelTag: TABLE_CELL_TAGS.title, text: data?.title ?? "")
+        Utils.setTableCellLabelText(cell: cell, labelTag: TABLE_CELL_TAGS.distance, text: data?.category_distance ?? "default")
+        Utils.setTableCellLabelText(cell: cell, labelTag: TABLE_CELL_TAGS.rate, text: data?.hourlyRate ?? "")
+        Utils.setTableCellLabelText(cell: cell, labelTag: TABLE_CELL_TAGS.working_hours, text: data?.start_end_time ?? "default")
         //Image Configuration with cache
-        Utils.setTableCellImageViewImage(cell: cell, imageViewTag: TABLE_CELL_TAGS.image, imageUrlString: data?.getImageUrl() ?? "", tableViewName: tableViewName, indexpath: indxPath)
+        Utils.setTableCellImageViewImage(cell: cell, imageViewTag: TABLE_CELL_TAGS.image, imageUrlString: data?.imageURL ?? "", tableViewName: tableViewName, indexpath: indxPath)
   
     }
     static func configureContent(cell:UITableViewCell) {

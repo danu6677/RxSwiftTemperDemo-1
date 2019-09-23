@@ -31,7 +31,7 @@ class TemperDemo_1Tests: XCTestCase {
         
         let mainData  = Dates(title: "My name", distance: "12", client: nil, shifts: nil, job_category: nil)
         let viewModel = JobsViewModel(mainData: mainData)
-        XCTAssertEqual(mainData.title, viewModel.getTitle())
+        XCTAssertEqual(mainData.title, viewModel.title)
         
     }
     
