@@ -46,45 +46,39 @@ class ViewController: UIViewController {
     fileprivate func fetchData(){
         view.isUserInteractionEnabled = false
         self.activityIndicator.startAnimating()
-        var jobsArray = [Dates]()
+
         let jobsObservable = Network.shared.retrieveJobDetails()
         
         jobsObservable.subscribe(onNext:{ [weak self] response in
             
-            //Append items to initialize the View Model
-            for items in response.data[Utils.getCurrentDate()] ?? [] {
-                if ((items.client?.photos.count ?? 0 > 0)){
-                    jobsArray.append(items)
-                }
-            }
             //Initializin the View Model
-            self?.jobsViewModel =  jobsArray.map({return JobsViewModel(mainData: $0)})
+            self?.jobsViewModel =  (response.data[Utils.getCurrentDate()]?.map({return JobsViewModel(mainData: $0)}))!
             
-            DispatchQueue.main.sync(execute: {
+              DispatchQueue.main.sync(execute: {
                 self?.tableView.reloadData()
                 self?.activityIndicator.stopAnimating()
                 self?.view.isUserInteractionEnabled = true
-            })
+              })
             
             
-            },onError:{(error) in
+            },onError:{ [weak self] error in
                 //Error Handling
                 DispatchQueue.main.sync(execute: {
-                    Utils.handleWebserviceErrors(errorCode: Constants.STATUS_CODE_UNAUTHORIZED, activityIndicator: self.activityIndicator, presentVC: self,alertActionMesasage:Constants.OK_ACTION)
-                    self.view.isUserInteractionEnabled = true
+                    Utils.handleWebserviceErrors(errorCode: Constants.STATUS_CODE_UNAUTHORIZED, activityIndicator: self!.activityIndicator, presentVC: self!,alertActionMesasage:Constants.OK_ACTION)
+                    self?.view.isUserInteractionEnabled = true
                 })
                 
-        },onCompleted:{
+            },onCompleted:{
             //calls upon recieving all the objects
-            DispatchQueue.main.async {
+              DispatchQueue.main.async {
                 self.activityIndicator.stopAnimating()
                 self.view.isUserInteractionEnabled = true
                 self.filterView.isHidden = false
                 self.bottomModalView.isHidden = false
-            }
+              }
             
-        },onDisposed:{
-            
+            },onDisposed:{
+         
         }).disposed(by: disposeBag)
         
         
